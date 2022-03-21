@@ -14,8 +14,8 @@ const {
   productList,
 } = require("../controllers/product.controllers");
 
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+const accessKeyId = process.env.ACCESS_KEY_ID;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 
 const s3 = new aws.S3({
   apiVersion: "2006-03-01",
