@@ -12,6 +12,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.use("/api/user", require("./routes/users.routes"));
 app.use("/api/admin", require("./routes/admin.routes"));
 app.use("/api/admin", require("./routes/product.routes"));
