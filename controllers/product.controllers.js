@@ -33,7 +33,7 @@ exports.addProduct = async (req, res, next) => {
 };
 
 // @desc Product List
-// @route GET api/admin/products/:id
+// @route GET api/products/:id
 // @access Public
 exports.productList = async (req, res, next) => {
   try {
@@ -53,5 +53,18 @@ exports.productList = async (req, res, next) => {
     return res.status(200).send(products);
   } catch (error) {
     return res.status(400).send("Unable to return product list", error);
+  }
+};
+
+// @desc Get Product
+// @route GET api/product/:id
+// @access Public
+exports.getProduct = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+    return res.status(200).send(product);
+  } catch (error) {
+    return res.status(400).send("Unable to return a product", error);
   }
 };
