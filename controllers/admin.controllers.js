@@ -38,3 +38,16 @@ exports.categoriesList = async (req, res, next) => {
     return res.status(400).send("Unable to return categories list", error);
   }
 };
+
+// @desc Sub Category List
+// @route GET api/admin/sub-categories/:categoryId
+// @access Public
+exports.getSubCategories = async (req, res, next) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const subCategory = await SubCategory.find({ categoryId: categoryId });
+    return res.status(200).send(subCategory);
+  } catch (error) {
+    return res.status(400).send("Unable to return sub categories", error);
+  }
+};
