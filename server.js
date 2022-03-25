@@ -9,12 +9,16 @@ connectDb();
 
 const app = express();
 
-app.use(express.json());
-app.use(cors());
+const corsOpts = {
+  origin: "*",
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+  methods: ["GET", "POST", "PUT", "DELETE"],
+
+  allowedHeaders: ["Content-Type"],
+};
+
+app.use(cors(corsOpts));
+app.use(express.json());
 
 app.use("/api/user", require("./routes/users.routes"));
 app.use("/api/admin", require("./routes/admin.routes"));
