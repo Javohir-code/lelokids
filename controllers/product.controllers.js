@@ -21,6 +21,7 @@ exports.addProduct = async (req, res, next) => {
       subcategoryId: req.body.subcategoryId,
       title: req.body.title,
       price: req.body.price,
+      salePrice: req.body.salePrice,
       description: req.body.description,
       photos: images,
       keys: keys,
