@@ -19,8 +19,7 @@ exports.addCategory = async (req, res, next) => {
 // @access Private
 exports.addSubCategory = async (req, res, next) => {
   try {
-    const subCategory = new SubCategory(req.body);
-    await subCategory.save();
+    const subCategory = await SubCategory.insertMany(req.body);
     return res.status(201).send(subCategory);
   } catch (error) {
     return res.status(400).send("Unable to add new sub-category", error);
