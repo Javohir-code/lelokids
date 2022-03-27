@@ -24,7 +24,7 @@ exports.loginUser = async (req, res, next) => {
       req.body.password
     );
     const token = user.generateAuthToken();
-    const userInfo = _.pick(user, ["_id", "name", "email", "isAdmin"]);
+    const userInfo = _.pick(user, ["_id", "firstName", "lastName", "email", "msisdn", "isAdmin"]);
     return res
       .header("auth-user", token)
       .json({ token: token, user: userInfo });

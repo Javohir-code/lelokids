@@ -1,5 +1,6 @@
 const Category = require("../models/Category");
 const SubCategory = require("../models/SubCategory");
+const User = require("../models/User");
 
 // @desc Add Category
 // @route POST api/admin/add-category
@@ -49,4 +50,30 @@ exports.getSubCategories = async (req, res, next) => {
   } catch (error) {
     return res.status(400).send("Unable to return sub categories", error);
   }
+};
+
+// @desc Get List Of Users
+// @route GET api/admin/users
+// @access Private
+exports.getUsersList = async (req, res, next) => {
+  try {
+    const users = await User.find({});
+    return res.status(200).send(users);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Delete User
+// @route GET api/admin/delete-user/:id
+// @access Private
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await User.findByIdAndDelete(id);
+    return res.status(200).send("User deleted");
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+  y;
 };
