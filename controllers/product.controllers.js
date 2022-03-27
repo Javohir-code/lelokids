@@ -33,7 +33,7 @@ exports.addProduct = async (req, res, next) => {
   }
 };
 
-// @desc Product List
+// @desc Product List By Category
 // @route GET api/products/:id
 // @access Public
 exports.productList = async (req, res, next) => {
@@ -67,5 +67,42 @@ exports.getProduct = async (req, res, next) => {
     return res.status(200).send(product);
   } catch (error) {
     return res.status(400).send("Unable to return a product", error);
+  }
+};
+
+// @desc Get All Products
+// @route GET api/all-products
+// @access Public
+exports.getAllProducts = async (req, res, next) => {
+  try {
+    const page = req.query.page ? parseInt(req.query.page) : 0;
+    const limit = req.query.page ? parseInt(req.query.limit) : 0;
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    results = {};
+
+    if (endIndex < (await Product.countDocuments().exec())) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    results.products = await Product.find()
+      .limit(limit)
+      .skip(startIndex)
+      .exec();
+    return res.status(200).send(results);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
   }
 };

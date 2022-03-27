@@ -13,6 +13,7 @@ const {
   addProduct,
   productList,
   getProduct,
+  getAllProducts
 } = require("../controllers/product.controllers");
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
@@ -42,5 +43,6 @@ const upload = multer({
 router.route("/admin/add-product").post(upload.array("photos"), addProduct);
 router.route("/products/:id").get(productList);
 router.route("/product/:id").get(getProduct);
+router.route("/all-products").get(getAllProducts);
 
 module.exports = router;
