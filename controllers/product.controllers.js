@@ -34,7 +34,7 @@ exports.addProduct = async (req, res, next) => {
   }
 };
 
-// @desc Product List By Category
+// @desc Product List By Sub Category
 // @route GET api/products/:id
 // @access Public
 exports.productList = async (req, res, next) => {
@@ -86,6 +86,7 @@ exports.getAllProducts = async (req, res, next) => {
     const endIndex = page * limit;
 
     const results = {};
+    const result = [];
 
     if (endIndex < (await Product.countDocuments().exec())) {
       results.next = {
@@ -101,7 +102,6 @@ exports.getAllProducts = async (req, res, next) => {
       };
     }
 
-    
     if (category) {
       const categories = await Category.find({});
       for (let i = 0; i < categories.length; i++) {
@@ -121,8 +121,19 @@ exports.getAllProducts = async (req, res, next) => {
         .exec();
     }
 
-    if(from || to) {
-      
+    if (from || to) {
+      for (let i = 0; i < results.products.length; i++) {
+        if (
+          (results.products[i].price >= from &&
+            results.products[i].price <= to) ||
+          results.products[i].price <= from ||
+          results.products[i].price >= to
+        ) {
+          result.push(results.products[i]);
+        }
+      }
+      results.products = result;
+      return res.status(200).send(results);
     }
 
     return res.status(200).send(results);
