@@ -124,11 +124,13 @@ exports.getAllProducts = async (req, res, next) => {
     if (from || to) {
       for (let i = 0; i < results.products.length; i++) {
         if (
-          (results.products[i].price >= from &&
-            results.products[i].price <= to) ||
-          results.products[i].price <= from ||
-          results.products[i].price >= to
+          results.products[i].price >= from &&
+          results.products[i].price <= to
         ) {
+          result.push(results.products[i]);
+        } else if (results.products[i].price <= from && !to) {
+          result.push(results.products[i]);
+        } else if (results.products[i].price >= to && !from) {
           result.push(results.products[i]);
         }
       }
