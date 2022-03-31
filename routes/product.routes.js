@@ -13,7 +13,8 @@ const {
   addProduct,
   productList,
   getProduct,
-  getAllProducts
+  getAllProducts,
+  deleteProduct,
 } = require("../controllers/product.controllers");
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
@@ -44,5 +45,6 @@ router.route("/admin/add-product").post(upload.array("photos"), addProduct);
 router.route("/products/:id").get(productList);
 router.route("/product/:id").get(getProduct);
 router.route("/all-products").get(getAllProducts);
+router.route("/admin/delete-product/:id").delete(deleteProduct);
 
 module.exports = router;

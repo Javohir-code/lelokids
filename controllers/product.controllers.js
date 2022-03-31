@@ -143,3 +143,17 @@ exports.getAllProducts = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+
+// @desc Delete A Product
+// @route GET api/admin/delete-product/:id
+// @access Private
+exports.deleteProduct = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await Product.findByIdAndDelete(id);
+    return res.status(200).send("Product deleted");
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+}
