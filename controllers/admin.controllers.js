@@ -65,13 +65,42 @@ exports.getUsersList = async (req, res, next) => {
 };
 
 // @desc Delete User
-// @route GET api/admin/delete-user/:id
+// @route DELETE api/admin/delete-user/:id
 // @access Private
 exports.deleteUser = async (req, res, next) => {
   try {
     const id = req.params.id;
     await User.findByIdAndDelete(id);
     return res.status(200).send("User deleted");
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Delete Category
+// @route DELETE api/admin/delete-category/:id
+// @access Private
+exports.deleteCategory = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const category = await Category.findByIdAndDelete(id);
+    if (category._id) {
+      await SubCategory.deleteMany({ categoryId: category._id });
+    }
+    return res.status(200).send("Category Deleted");
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Delete Sub-Category
+// @route DELETE api/admin/delete-subcategory/:id
+// @access Private
+exports.deleteSubCategory = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await SubCategory.findByIdAndDelete(id);
+    return res.status(200).send("Sub-Category Deleted");
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
