@@ -28,5 +28,5 @@ app.use("/api", require("./routes/order.routes"));
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT} port in a ${process.env.NODE_ENV}`);
+  console.log(`Server is running on ${PORT} port`);
 });
