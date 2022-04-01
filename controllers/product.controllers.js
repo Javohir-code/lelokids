@@ -30,7 +30,7 @@ exports.addProduct = async (req, res, next) => {
     await product.save();
     return res.status(201).send(product);
   } catch (error) {
-    return res.status(400).send("Unable to add new product", error);
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -144,7 +144,6 @@ exports.getAllProducts = async (req, res, next) => {
   }
 };
 
-
 // @desc Delete A Product
 // @route GET api/admin/delete-product/:id
 // @access Private
@@ -156,5 +155,4 @@ exports.deleteProduct = async (req, res, next) => {
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
-}
-
+};
