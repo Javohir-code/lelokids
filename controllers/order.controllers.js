@@ -39,3 +39,15 @@ exports.deleteOrder = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+// @desc Orders List
+// @route GET api/admin/orders
+// @access Private
+exports.ordersList = async (req, res, next) => {
+  try {
+    const orders = await Order.find({}).populate("userId");
+    return res.status(200).send(orders);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
