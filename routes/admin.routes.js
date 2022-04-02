@@ -7,7 +7,8 @@ const {
   getUsersList,
   deleteUser,
   deleteCategory,
-  deleteSubCategory
+  deleteSubCategory,
+  salePriceStatistics,
 } = require("../controllers/admin.controllers");
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.route("/users").get(getUsersList);
 router.route("/delete-user/:id").delete(deleteUser);
 router.route("/delete-category/:id").delete(deleteCategory);
 router.route("/delete-subcategory/:id").delete(deleteSubCategory);
+router.route("/sale-price/statistics").get(salePriceStatistics);
 
 module.exports = router;

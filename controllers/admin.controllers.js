@@ -1,6 +1,8 @@
 const Category = require("../models/Category");
+const Order = require("../models/Order");
 const SubCategory = require("../models/SubCategory");
 const User = require("../models/User");
+const moment = require("moment");
 
 // @desc Add Category
 // @route POST api/admin/add-category
@@ -101,6 +103,54 @@ exports.deleteSubCategory = async (req, res, next) => {
     const id = req.params.id;
     await SubCategory.findByIdAndDelete(id);
     return res.status(200).send("Sub-Category Deleted");
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Sale Price Statistics
+// @route GET api/admin/sale-price/statistics
+// @access Private
+exports.salePriceStatistics = async (req, res, next) => {
+  try {
+    const { year } = req.query;
+    let total = 0;
+    const result = [];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const salePrices = await Order.find({}).select("salePrice createdAt");
+    months.forEach((month) => {
+      let filtered = {};
+      let count = 0;
+      let total = 0;
+
+      salePrices.forEach((sale) => {
+        createdAtMonth = moment(sale.createdAt).format("MMMM");
+        if (
+          year == moment(sale.createdAt).format("YYYY") &&
+          month == createdAtMonth
+        ) {
+          total += sale.salePrice;
+          count++;
+        }
+      });
+      filtered = { month: month, amount: total, count: count };
+
+      result.push(filtered);
+    });
+    return res.status(200).json({ result: result });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
