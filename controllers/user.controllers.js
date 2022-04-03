@@ -7,8 +7,9 @@ const _ = require("lodash");
 exports.registerUser = async (req, res, next) => {
   try {
     const user = new User(req.body);
+    const token = user.generateAuthToken();
     await user.save();
-    return res.status(201).send(user);
+    return res.header("auth-user", token).json({ token: token, user: user });
   } catch (error) {
     return res.status(400).send("Unable to add a user", error);
   }
