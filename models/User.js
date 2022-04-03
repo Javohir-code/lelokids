@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     lastName: {
       type: String,
       trim: true,
-      required: true
+      required: true,
     },
     email: {
       type: String,
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     msisdn: {
       type: String,
       trim: true,
-      required: true
+      required: true,
     },
     isAdmin: {
       type: Boolean,
@@ -67,7 +67,10 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.generateAuthToken = () => {
-  const token = jwt.sign({ _id: this._id }, process.env.TOKEN_SECRET);
+  const token = jwt.sign(
+    { _id: this._id, isAdmin: this.isAdmin },
+    process.env.TOKEN_SECRET
+  );
   return token;
 };
 

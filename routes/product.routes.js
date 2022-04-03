@@ -4,6 +4,7 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const uuid = require("uuid").v4;
 const path = require("path");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -35,10 +36,12 @@ const upload = multer({
   }),
 });
 
-router.route("/admin/add-product").post(upload.array("photos"), addProduct);
+router
+  .route("/admin/add-product")
+  .post(auth, upload.array("photos"), addProduct);
 router.route("/products/:id").get(productList);
 router.route("/product/:id").get(getProduct);
 router.route("/all-products").get(getAllProducts);
-router.route("/admin/delete-product/:id").delete(deleteProduct);
+router.route("/admin/delete-product/:id").delete(auth, deleteProduct);
 
 module.exports = router;

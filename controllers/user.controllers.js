@@ -24,12 +24,20 @@ exports.loginUser = async (req, res, next) => {
       req.body.password
     );
     const token = user.generateAuthToken();
-    const userInfo = _.pick(user, ["_id", "firstName", "lastName", "email", "msisdn", "isAdmin"]);
+    const userInfo = _.pick(user, [
+      "_id",
+      "firstName",
+      "lastName",
+      "email",
+      "msisdn",
+      "isAdmin",
+    ]);
     return res
       .header("auth-user", token)
       .json({ token: token, user: userInfo });
   } catch (error) {
-    return res.status(400).send("Password or Email is not valid");
+    return res.status(400).json({
+      message: error.message,
+    });
   }
 };
-

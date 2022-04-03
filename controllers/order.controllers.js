@@ -3,7 +3,7 @@ const Product = require("../models/Product");
 
 // @desc Order Products
 // @route POST api/products/check-out
-// @access Public
+// @access Private
 exports.orderProducts = async (req, res, next) => {
   try {
     const order = new Order(req.body);
