@@ -115,7 +115,6 @@ exports.deleteSubCategory = async (req, res, next) => {
 exports.salePriceStatistics = async (req, res, next) => {
   try {
     const { year } = req.query;
-    let total = 0;
     const result = [];
     const months = [
       "January",
@@ -152,6 +151,23 @@ exports.salePriceStatistics = async (req, res, next) => {
       result.push(filtered);
     });
     return res.status(200).json({ result: result });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Dashboard Statistics
+// @route GET api/admin/dashboard
+// @access Private
+exports.dashboardStatistics = async (req, res, next) => {
+  try {
+    let total = 0;
+    const count = await Order.countDocuments();
+    const orders = await Order.find({}).select("totalPrice");
+    orders.forEach((order) => {
+      total += order.totalPrice;
+    });
+    return res.status(200).json({total: total, count: count });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
