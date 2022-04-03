@@ -167,7 +167,25 @@ exports.dashboardStatistics = async (req, res, next) => {
     orders.forEach((order) => {
       total += order.totalPrice;
     });
-    return res.status(200).json({total: total, count: count });
+    return res.status(200).json({ total: total, count: count });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Confirm Orders
+// @route PUT api/admin/order/confirm/:id
+// @access Private
+exports.confirmOrder = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const order = await Order.findByIdAndUpdate(
+      id,
+      { isConfirmed: req.body.isConfirmed },
+      { new: true }
+    );
+
+    return res.status(200).send(order);
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

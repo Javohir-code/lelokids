@@ -1,5 +1,4 @@
 const express = require("express");
-const { route } = require("express/lib/application");
 const {
   addCategory,
   addSubCategory,
@@ -11,6 +10,7 @@ const {
   deleteSubCategory,
   salePriceStatistics,
   dashboardStatistics,
+  confirmOrder,
 } = require("../controllers/admin.controllers");
 const auth = require("../middleware/auth");
 
@@ -26,5 +26,6 @@ router.route("/delete-category/:id").delete(auth, deleteCategory);
 router.route("/delete-subcategory/:id").delete(auth, deleteSubCategory);
 router.route("/sale-price/statistics").get(auth, salePriceStatistics);
 router.route("/dashboard").get(auth, dashboardStatistics);
+router.route("/order/confirm/:id").put(auth, confirmOrder);
 
 module.exports = router;
