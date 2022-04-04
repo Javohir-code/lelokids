@@ -45,7 +45,16 @@ exports.deleteOrder = async (req, res, next) => {
 // @access Private
 exports.ordersList = async (req, res, next) => {
   try {
-    const orders = await Order.find({}).populate("userId");
+    const status = parseInt(req.query.status);
+    if (status == 1 || status == 0) {
+      const orders = await Order.find({ isConfirmed: status })
+        .populate("userId")
+        .sort({ createdAt: -1 });
+      return res.status(200).send(orders);
+    }
+    const orders = await Order.find({})
+      .populate("userId")
+      .sort({ createdAt: -1 });
     return res.status(200).send(orders);
   } catch (error) {
     return res.status(400).json({ message: error.message });

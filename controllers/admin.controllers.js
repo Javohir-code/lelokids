@@ -161,13 +161,17 @@ exports.salePriceStatistics = async (req, res, next) => {
 // @access Private
 exports.dashboardStatistics = async (req, res, next) => {
   try {
-    let total = 0;
+    let totalPrice = 0;
+    let salePrice = 0;
     const count = await Order.countDocuments();
-    const orders = await Order.find({}).select("totalPrice");
+    const orders = await Order.find({}).select("totalPrice salePrice");
     orders.forEach((order) => {
-      total += order.totalPrice;
+      totalPrice += order.totalPrice;
+      salePrice += order.salePrice;
     });
-    return res.status(200).json({ total: total, count: count });
+    return res
+      .status(200)
+      .json({ totalPrice: totalPrice, salePrice: salePrice, count: count });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
