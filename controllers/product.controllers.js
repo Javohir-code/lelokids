@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const Category = require("../models/Category");
+const Order = require("../models/Order");
 
 // @desc Add Product
 // @route POST api/admin/add-product
@@ -152,6 +153,44 @@ exports.deleteProduct = async (req, res, next) => {
     const id = req.params.id;
     await Product.findByIdAndDelete(id);
     return res.status(200).send("Product deleted");
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Most Selling Products
+// @route GET api/best-selling
+// @access Public
+exports.bestSelling = async (req, res, next) => {
+  try {
+    let results = [];
+    let outcomes = [];
+    const productsList = await Product.find({}).select(
+      "categoryId subcategoryId title price description photos "
+    );
+    const ordersList = await Order.find({});
+    productsList.forEach((product) => {
+      let total = 0;
+      let result = {};
+      ordersList.forEach((order) => {
+        order.orders.forEach((pro) => {
+          if (product._id == pro._id) {
+            pro.quantity = pro.quantity ? pro.quantity : 0;
+            total += pro.quantity;
+          }
+        });
+      });
+      result = { product: product, quantity: total };
+      results.push(result);
+    });
+
+    results.sort((a, b) => b.quantity - a.quantity);
+
+    for (let i = 0; i < 12; i++) {
+      outcomes.push(results[i]);
+    }
+
+    return res.status(200).json({ results: outcomes });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

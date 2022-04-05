@@ -14,6 +14,7 @@ const {
   getProduct,
   getAllProducts,
   deleteProduct,
+  bestSelling,
 } = require("../controllers/product.controllers");
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
@@ -43,5 +44,6 @@ router.route("/products/:id").get(productList);
 router.route("/product/:id").get(getProduct);
 router.route("/all-products").get(getAllProducts);
 router.route("/admin/delete-product/:id").delete(auth, deleteProduct);
+router.route("/best-selling").get(bestSelling);
 
 module.exports = router;
