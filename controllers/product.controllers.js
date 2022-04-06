@@ -195,3 +195,26 @@ exports.bestSelling = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+// @desc Search Product by its title
+// @route GET api/search/product
+// @access Public
+exports.searchProduct = async (req, res, next) => {
+  try {
+    const title = req.query.title;
+    const product = await Product.find(
+      {
+        title: {
+          $regex: new RegExp(title),
+        },
+      },
+      {
+        _id: 0,
+        __v: 0,
+      }
+    );
+    return res.status(200).send(product);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
