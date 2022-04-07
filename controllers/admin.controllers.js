@@ -14,7 +14,7 @@ exports.addCategory = async (req, res, next) => {
     await category.save();
     return res.status(201).send(category);
   } catch (error) {
-    return res.status(400).send("Unable to add new category", error);
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -26,7 +26,7 @@ exports.addSubCategory = async (req, res, next) => {
     const subCategory = await SubCategory.insertMany(req.body);
     return res.status(201).send(subCategory);
   } catch (error) {
-    return res.status(400).send("Unable to add new sub-category", error);
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -38,7 +38,7 @@ exports.categoriesList = async (req, res, next) => {
     const categories = await Category.find({});
     return res.status(200).send(categories);
   } catch (error) {
-    return res.status(400).send("Unable to return categories list", error);
+    return res.status(400).json({ error: error.message });
   }
 };
 
@@ -51,7 +51,7 @@ exports.getSubCategories = async (req, res, next) => {
     const subCategory = await SubCategory.find({ categoryId: categoryId });
     return res.status(200).send(subCategory);
   } catch (error) {
-    return res.status(400).send("Unable to return sub categories", error);
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -194,3 +194,14 @@ exports.confirmOrder = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+// @desc Add Sale Percent
+// @route POST api/admin/add-sale
+// @access Private
+// exports.addSale = async (req, res, next) => {
+//   try {
+
+//   } catch (error) {
+//     return res.status(400).json({ message: error.message });
+//   }
+// };

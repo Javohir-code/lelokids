@@ -26,6 +26,7 @@ exports.addProduct = async (req, res, next) => {
       salePrice: req.body.salePrice,
       description: req.body.description,
       photos: images,
+      colors: req.body.colors,
       keys: keys,
     });
     await product.save();
@@ -36,15 +37,30 @@ exports.addProduct = async (req, res, next) => {
 };
 
 // @desc Product List By Sub Category
-// @route GET api/products/:id
+// @route GET api/products/:id?/:name?
 // @access Public
 exports.productList = async (req, res, next) => {
   try {
     const id = req.params.id;
+    const name = req.params.name;
     const from = parseInt(req.query.from);
     const to = parseInt(req.query.to);
     const result = [];
-    const products = await Product.find({ subcategoryId: id });
+    let products;
+    if (id != ":") {
+      products = await Product.find({ subcategoryId: id });
+    } else if (name != ":") {
+      let filtered = [];
+      products = await Product.find().populate("categoryId");
+
+      for (let i = 0; i < products.length; i++) {
+        if (products[i].categoryId.name == name) {
+          filtered.push(products[i]);
+        }
+      }
+      products = filtered;
+    }
+
     if (from || to) {
       for (let i = 0; i < products.length; i++) {
         if (products[i].price >= from && products[i].price <= to) {
@@ -55,7 +71,7 @@ exports.productList = async (req, res, next) => {
     }
     return res.status(200).send(products);
   } catch (error) {
-    return res.status(400).send("Unable to return product list", error);
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -68,7 +84,7 @@ exports.getProduct = async (req, res, next) => {
     const product = await Product.findById(id);
     return res.status(200).send(product);
   } catch (error) {
-    return res.status(400).send("Unable to return a product", error);
+    return res.status(400).json({ message: error.message });
   }
 };
 

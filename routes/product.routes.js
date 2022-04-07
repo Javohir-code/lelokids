@@ -41,7 +41,7 @@ const upload = multer({
 router
   .route("/admin/add-product")
   .post(auth, upload.array("photos"), addProduct);
-router.route("/products/:id").get(productList);
+router.route("/products/:id?/:name?").get(productList);
 router.route("/product/:id").get(getProduct);
 router.route("/all-products").get(getAllProducts);
 router.route("/admin/delete-product/:id").delete(auth, deleteProduct);

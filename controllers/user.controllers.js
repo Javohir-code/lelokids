@@ -11,7 +11,7 @@ exports.registerUser = async (req, res, next) => {
     await user.save();
     return res.header("auth-user", token).json({ token: token, user: user });
   } catch (error) {
-    return res.status(400).send("Unable to add a user", error);
+    return res.status(400).json({ error: error.message });
   }
 };
 

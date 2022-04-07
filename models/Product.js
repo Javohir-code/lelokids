@@ -30,6 +30,9 @@ const productSchema = new mongoose.Schema({
   photos: {
     type: Array,
   },
+  colors: {
+    type: Array,
+  },
   keys: {
     type: Array,
   },
