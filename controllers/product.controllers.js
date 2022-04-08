@@ -27,6 +27,7 @@ exports.addProduct = async (req, res, next) => {
       description: req.body.description,
       photos: images,
       colors: req.body.colors,
+      ages: req.body.ages,
       keys: keys,
     });
     await product.save();

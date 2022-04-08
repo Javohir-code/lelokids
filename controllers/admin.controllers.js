@@ -2,6 +2,7 @@ const Category = require("../models/Category");
 const Order = require("../models/Order");
 const SubCategory = require("../models/SubCategory");
 const User = require("../models/User");
+const Sale = require("../models/Sale");
 const moment = require("moment");
 const auth = require("../middleware/auth");
 
@@ -198,10 +199,12 @@ exports.confirmOrder = async (req, res, next) => {
 // @desc Add Sale Percent
 // @route POST api/admin/add-sale
 // @access Private
-// exports.addSale = async (req, res, next) => {
-//   try {
-
-//   } catch (error) {
-//     return res.status(400).json({ message: error.message });
-//   }
-// };
+exports.addSale = async (req, res, next) => {
+  try {
+    const sale = new Sale(req.body);
+    await sale.save();
+    return res.status(201).send(sale);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};

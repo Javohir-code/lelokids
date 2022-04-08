@@ -33,6 +33,9 @@ const productSchema = new mongoose.Schema({
   colors: {
     type: Array,
   },
+  ages: {
+    type: Array,
+  },
   keys: {
     type: Array,
   },
