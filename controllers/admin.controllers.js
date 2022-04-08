@@ -207,3 +207,15 @@ exports.addSale = async (req, res, next) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+// @desc Get Sales List
+// @route POST api/admin/sales
+// @access Private
+exports.getSales = async (req, res, next) => {
+  try {
+    const sales = await Sale.find({});
+    return res.status(200).send(sales);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
