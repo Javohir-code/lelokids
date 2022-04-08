@@ -201,8 +201,7 @@ exports.confirmOrder = async (req, res, next) => {
 // @access Private
 exports.addSale = async (req, res, next) => {
   try {
-    const sale = new Sale(req.body);
-    await sale.save();
+    const sale = await Sale.insertMany(req.body);
     return res.status(201).send(sale);
   } catch (error) {
     return res.status(400).json({ message: error.message });
