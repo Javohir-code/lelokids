@@ -11,8 +11,9 @@ const {
   salePriceStatistics,
   dashboardStatistics,
   confirmOrder,
-  addSale,
   getSales,
+  updateSale,
+  addSale,
 } = require("../controllers/admin.controllers");
 const auth = require("../middleware/auth");
 
@@ -29,7 +30,8 @@ router.route("/delete-subcategory/:id").delete(auth, deleteSubCategory);
 router.route("/sale-price/statistics").get(auth, salePriceStatistics);
 router.route("/dashboard").get(auth, dashboardStatistics);
 router.route("/order/confirm/:id").put(auth, confirmOrder);
-router.route("/add-sale").post(auth, addSale);
-router.route("/sales").get(auth, getSales);
+router.route("/sales").get(getSales);
+router.route("/update-sale/:id").put(auth, updateSale);
+// router.route("/add-sale").post(addSale);
 
 module.exports = router;

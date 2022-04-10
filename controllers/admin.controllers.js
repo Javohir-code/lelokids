@@ -199,14 +199,14 @@ exports.confirmOrder = async (req, res, next) => {
 // @desc Add Sale Percent
 // @route POST api/admin/add-sale
 // @access Private
-exports.addSale = async (req, res, next) => {
-  try {
-    const sale = await Sale.insertMany(req.body);
-    return res.status(201).send(sale);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
-};
+// exports.addSale = async (req, res, next) => {
+//   try {
+//     const sale = await Sale.insertMany(req.body);
+//     return res.status(201).send(sale);
+//   } catch (error) {
+//     return res.status(400).json({ message: error.message });
+//   }
+// };
 
 // @desc Get Sales List
 // @route POST api/admin/sales
@@ -215,6 +215,23 @@ exports.getSales = async (req, res, next) => {
   try {
     const sales = await Sale.find({});
     return res.status(200).send(sales);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Update Sale Percent
+// @route PUT api/admin/update-sale/:id
+// @access Private
+exports.updateSale = async (req, res, next) => {
+  try {
+    const saleId = req.params.id;
+    const sale = await Sale.findByIdAndUpdate(
+      saleId,
+      { amount: req.body.amount, percent: req.body.percent },
+      { new: true }
+    );
+    return res.status(200).send(sale);
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
