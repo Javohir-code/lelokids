@@ -183,7 +183,7 @@ exports.bestSelling = async (req, res, next) => {
     let results = [];
     let outcomes = [];
     const productsList = await Product.find({}).select(
-      "categoryId subcategoryId title price description photos "
+      "categoryId subcategoryId title price description photos colors ages"
     );
     const ordersList = await Order.find({});
     productsList.forEach((product) => {
