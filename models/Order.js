@@ -15,7 +15,6 @@ const orderSchema = new mongoose.Schema({
   },
   salePrice: {
     type: Number,
-    required: true,
   },
   isConfirmed: {
     type: Number,
