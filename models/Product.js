@@ -23,6 +23,9 @@ const productSchema = new mongoose.Schema({
   salePrice: {
     type: Number,
   },
+  eachPack: {
+    type: Number,
+  },
   description: {
     type: String,
     required: true,

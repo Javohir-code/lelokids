@@ -24,6 +24,7 @@ exports.addProduct = async (req, res, next) => {
       title: req.body.title,
       price: req.body.price,
       salePrice: req.body.salePrice,
+      eachPack: req.body.eachPack,
       description: req.body.description,
       photos: images,
       colors: req.body.colors,
