@@ -223,7 +223,7 @@ exports.searchProduct = async (req, res, next) => {
     const product = await Product.find(
       {
         title: {
-          $regex: new RegExp(title),
+          $regex: new RegExp(title, "i"),
         },
       },
       {
