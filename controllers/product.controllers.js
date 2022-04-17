@@ -227,7 +227,6 @@ exports.searchProduct = async (req, res, next) => {
         },
       },
       {
-        _id: 0,
         __v: 0,
       }
     );
