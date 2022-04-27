@@ -1,10 +1,13 @@
+const moment = require("moment");
 const Category = require("../models/Category");
 const Order = require("../models/Order");
 const SubCategory = require("../models/SubCategory");
 const User = require("../models/User");
 const Sale = require("../models/Sale");
-const moment = require("moment");
-const auth = require("../middleware/auth");
+const Banner = require("../models/Banner");
+
+const aws = require("aws-sdk");
+const s3 = new aws.S3({ apiVersion: "2006-03-01" });
 
 // @desc Add Category
 // @route POST api/admin/add-category
@@ -232,6 +235,76 @@ exports.updateSale = async (req, res, next) => {
       { new: true }
     );
     return res.status(200).send(sale);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Add A Banner
+// @route POST api/admin/add-banner
+// @access Private
+exports.addBanner = async (req, res, next) => {
+  try {
+    let image = req.file.location;
+    let key = image.substr(image.lastIndexOf("m/") + 2);
+
+    const newBanner = new Banner({
+      tag: req.body.tag,
+      photo: image,
+      key: key,
+    });
+    await newBanner.save();
+    return res.status(200).send(newBanner);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Update A Banner
+// @route PUT api/admin/update/banner/:id
+// @access Private
+exports.updateBanner = async (req, res, next) => {
+  try {
+    const bannerId = req.params.id;
+    let image = req.file.location;
+    let key = image.substr(image.lastIndexOf("m/") + 2);
+
+    const deleteBanner = await Banner.findById(bannerId);
+
+    let params = {
+      Bucket: "lelokids",
+      Key: deleteBanner.key,
+    };
+
+    try {
+      await s3.deleteObject(params).promise();
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
+
+    const banner = await Banner.findByIdAndUpdate(
+      bannerId,
+      {
+        tag: req.body.tag,
+        photo: image,
+        key: key,
+      },
+      { new: true }
+    );
+
+    return res.status(200).send(banner);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// @desc Get Banners
+// @route GET api/admin/list/banners
+// @access Public
+exports.getBanners = async (req, res, next) => {
+  try {
+    const banners = await Banner.find({}).sort({ createdAt: -1 });
+    return res.status(200).send(banners);
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
