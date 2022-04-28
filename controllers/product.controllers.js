@@ -53,10 +53,10 @@ exports.productList = async (req, res, next) => {
       products = await Product.find({ subcategoryId: id });
     } else if (name != ":") {
       let filtered = [];
-      products = await Product.find().populate("categoryId");
+      products = await Product.find().populate("subcategoryId");
 
       for (let i = 0; i < products.length; i++) {
-        if (products[i].categoryId.name == name) {
+        if (products[i].subcategoryId.name == name) {
           filtered.push(products[i]);
         }
       }
