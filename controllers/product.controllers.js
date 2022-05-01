@@ -39,12 +39,13 @@ exports.addProduct = async (req, res, next) => {
 };
 
 // @desc Product List By Sub Category
-// @route GET api/products/:id?/:name?
+// @route GET api/products/:id?/:name?/:categoryId?
 // @access Public
 exports.productList = async (req, res, next) => {
   try {
     const id = req.params.id;
     const name = req.params.name;
+    const categoryId = req.params.categoryId;
     const from = parseInt(req.query.from);
     const to = parseInt(req.query.to);
     const result = [];
@@ -53,7 +54,7 @@ exports.productList = async (req, res, next) => {
       products = await Product.find({ subcategoryId: id });
     } else if (name != ":") {
       let filtered = [];
-      products = await Product.find().populate("subcategoryId");
+      products = await Product.find({categoryId: categoryId}).populate("subcategoryId");
 
       for (let i = 0; i < products.length; i++) {
         if (products[i].subcategoryId.name == name) {

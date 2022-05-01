@@ -10,6 +10,10 @@ const bannerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
   key: {
     type: String,
   },

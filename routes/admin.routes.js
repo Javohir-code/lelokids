@@ -60,7 +60,7 @@ router.route("/sales").get(getSales);
 router.route("/update-sale/:id").put(auth, updateSale);
 router.route("/add-banner").post(upload.single("photo"), addBanner);
 router.route("/update/banner/:id").put(auth, upload.single("photo"), updateBanner);
-router.route("/list/banners").get(auth, getBanners);
+router.route("/list/banners").get(getBanners);
 // router.route("/add-sale").post(addSale);
 
 module.exports = router;

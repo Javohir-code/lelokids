@@ -251,6 +251,7 @@ exports.addBanner = async (req, res, next) => {
     const newBanner = new Banner({
       tag: req.body.tag,
       photo: image,
+      categoryId: req.body.categoryId,
       key: key,
     });
     await newBanner.save();
@@ -287,6 +288,7 @@ exports.updateBanner = async (req, res, next) => {
       {
         tag: req.body.tag,
         photo: image,
+        categoryId: req.body.categoryId,
         key: key,
       },
       { new: true }
@@ -303,7 +305,9 @@ exports.updateBanner = async (req, res, next) => {
 // @access Public
 exports.getBanners = async (req, res, next) => {
   try {
-    const banners = await Banner.find({}).sort({ createdAt: -1 });
+    const banners = await Banner.find({})
+      .sort({ createdAt: -1 })
+      .populate("categoryId");
     return res.status(200).send(banners);
   } catch (error) {
     return res.status(400).json({ message: error.message });
